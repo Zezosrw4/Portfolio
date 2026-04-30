@@ -140,6 +140,79 @@
             scroll-behavior: smooth;
         }
 
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #2c3e50;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0056b3;
+        }
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #e74c3c;
+        }
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.83rem;
+            margin-top: 4px;
+            display: none;
+        }
+        .error-msg.visible {
+            display: block;
+        }
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        .submit-btn {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #004494;
+        }
+        .success-msg {
+            display: none;
+            background: #eafaf1;
+            border: 1px solid #27ae60;
+            color: #27ae60;
+            padding: 14px 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .success-msg.visible {
+            display: block;
+        }
+
         .logo-bar {
             background: #001a33;
             display: flex;
@@ -287,14 +360,48 @@
         </section>
 
         <section id="contact">
-            <h2>Contact Information</h2>
-            <p>
-                I am always open to discussing new projects, internships, or academic collaborations. 
-                You can reach me via email at <strong>221120014@aue.ae</strong> or connect with me professionally online. 
-                I aim to keep my professional network active and up to date with the latest industry trends. 
-                <br><br>
-                Visit my profile on <a href="https://www.linkedin.com" target="_blank" style="color: #0056b3; font-weight: bold; text-decoration: none;">LinkedIn</a>.
+            <h2>Contact Me</h2>
+            <p style="margin-bottom: 24px;">
+                I am always open to discussing new projects, internships, or academic collaborations.
+                Fill in the form below or reach me at <strong>221120014@aue.ae</strong> or on
+                <a href="https://www.linkedin.com" target="_blank" style="color: #0056b3; font-weight: bold; text-decoration: none;">LinkedIn</a>.
             </p>
+
+            <div class="form-group">
+                <label for="fname">Full Name</label>
+                <input type="text" id="fname" placeholder="Enter your full name">
+                <div class="error-msg" id="fname-error">Name is required.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="femail">Email Address</label>
+                <input type="email" id="femail" placeholder="Enter your email address">
+                <div class="error-msg" id="femail-error">Please enter a valid email address.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="fsubject">Subject</label>
+                <select id="fsubject">
+                    <option value="">-- Select a subject --</option>
+                    <option value="internship">Internship Opportunity</option>
+                    <option value="collaboration">Academic Collaboration</option>
+                    <option value="project">Project Inquiry</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="error-msg" id="fsubject-error">Please select a subject.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="fmessage">Message</label>
+                <textarea id="fmessage" placeholder="Write your message here..."></textarea>
+                <div class="error-msg" id="fmessage-error">Message cannot be empty.</div>
+            </div>
+
+            <button class="submit-btn" onclick="validateForm()">Send Message</button>
+
+            <div class="success-msg" id="success-msg">
+                &#x2714; Thank you! Your message has been sent successfully.
+            </div>
         </section>
 
         <footer>
@@ -329,6 +436,63 @@
                 bgMusic.play();
             } else {
                 bgMusic.pause();
+            }
+        }
+
+        function validateForm() {
+            let valid = true;
+
+            const name = document.getElementById('fname');
+            const nameErr = document.getElementById('fname-error');
+            if (name.value.trim() === '') {
+                name.classList.add('error');
+                nameErr.classList.add('visible');
+                valid = false;
+            } else {
+                name.classList.remove('error');
+                nameErr.classList.remove('visible');
+            }
+
+            const email = document.getElementById('femail');
+            const emailErr = document.getElementById('femail-error');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value.trim())) {
+                email.classList.add('error');
+                emailErr.classList.add('visible');
+                valid = false;
+            } else {
+                email.classList.remove('error');
+                emailErr.classList.remove('visible');
+            }
+
+            const subject = document.getElementById('fsubject');
+            const subjectErr = document.getElementById('fsubject-error');
+            if (subject.value === '') {
+                subject.classList.add('error');
+                subjectErr.classList.add('visible');
+                valid = false;
+            } else {
+                subject.classList.remove('error');
+                subjectErr.classList.remove('visible');
+            }
+
+            const message = document.getElementById('fmessage');
+            const messageErr = document.getElementById('fmessage-error');
+            if (message.value.trim() === '') {
+                message.classList.add('error');
+                messageErr.classList.add('visible');
+                valid = false;
+            } else {
+                message.classList.remove('error');
+                messageErr.classList.remove('visible');
+            }
+
+            if (valid) {
+                document.getElementById('success-msg').classList.add('visible');
+                name.value = '';
+                email.value = '';
+                subject.value = '';
+                message.value = '';
             }
         }
     </script>
